@@ -6,7 +6,6 @@ COPY package.json .
 # COPY settings.js .
 
 RUN apk update && apk add git \
-    && npm install axios@1.6.5 \
     && npm install --unsafe-perm --no-update-notifier --no-fund --omit=dev
 
 COPY --chown=node-red:node-red . .
@@ -24,6 +23,10 @@ COPY --chown=node-red:node-red --from=build /usr/src/node-red/package.json /usr/
 COPY --chown=node-red:node-red --from=build /usr/src/node-red/packages /usr/src/node-red/packages
 COPY --chown=node-red:node-red --from=build /usr/src/node-red/node_modules /usr/src/node-red/node_modules
 COPY --chown=node-red:node-red --from=build /usr/src/node-red/scripts /usr/src/node-red/scripts
+
+## Installing additional dependencies
+WORKDIR /data
+RUN npm install axios@1.6.5
 
 WORKDIR /usr/src/node-red
 
